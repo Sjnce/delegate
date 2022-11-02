@@ -13,52 +13,60 @@ namespace Делегаты
 {
     public partial class Form1 : Form
     {
-        Class1 account;
-        AccountHandler Ach;
-        void PrintSimpleMessage(string message) => listBox1.Items.Add(message);
-
         public Form1()
         {
             InitializeComponent();
         }
 
-        public class Bank
-        {
-            public int Sum;
-            public string Fio;
-
-            public Bank(int s, string f)
-            {
-                Sum = s;
-                Fio = f;
-            }
-        }
-
+        Account ac;
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            account.Add(Convert.ToInt32(textBox1.Text));
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
-            Class1 account = new Class1(200);
-            account.RegisterHandler(PrintSimpleMessage);
-            account.Take(100);
-            account.Take(150);
-
-            void PrintSimpleMessage(string message) => Console.WriteLine(message);
+            ac = new Account(Convert.ToInt32(textBox2.Text), textBox1.Text);
+            listBox1.Items.Clear();
+            listBox1.Items.Add($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
+            MessageBox.Show($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
         }
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ac.Add(Convert.ToInt32(textBox3.Text));
+            listBox1.Items.Clear();
+            listBox1.Items.Add($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
+            MessageBox.Show($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
+        }
         private void button3_Click(object sender, EventArgs e)
         {
-            account.Take(Convert.ToInt32(textBox1.Text));
+            int x = Convert.ToInt32(textBox4.Text);
+            if (ac.sum < x)
+            {
+                listBox1.Items.Clear();
+                listBox1.Items.Add("На счету недосатточно средств");
+                MessageBox.Show("На счету недосатточно средств");
+            }
+            else
+            {
+                ac.Take(Convert.ToInt32(textBox4.Text));
+                listBox1.Items.Clear();
+                listBox1.Items.Add($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
+                MessageBox.Show($"Владелец счёта: {ac.fio}, состояние счета: {ac.sum}");
+            }
         }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
