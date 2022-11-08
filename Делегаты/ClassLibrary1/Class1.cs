@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     public delegate void AccountHandler(string message);
+
     public class Account
     {
         public int sum;
@@ -22,9 +23,14 @@ namespace ClassLibrary1
         // Регистрируем делегат
         public void RegisterHandler(AccountHandler del)
         {
-            taken = del;
+            taken += del;
+        }
+        public void UnregisterHandler(AccountHandler del)
+        {
+            taken -= del;
         }
         public void Add(int sum) => this.sum += sum;
+
         public void Take(int sum)
         {
             if (this.sum >= sum)
@@ -32,11 +38,25 @@ namespace ClassLibrary1
                 this.sum -= sum;
                 // вызываем делегат, передавая ему сообщение
                 Notify?.Invoke($"Со счета списано {sum} у.е.");
+
             }
             else
             {
                 Notify?.Invoke($"Недостаточно средств. Баланс: {this.sum} у.е.");
             }
+        }
+    }
+
+    public class AccountEventArgs
+    {
+        public string Message { get; }
+
+        public int Sum { get; }
+
+        public AccountEventArgs(string message, int sum)
+        {
+            Message = message;
+            Sum = sum;
         }
     }
 }
