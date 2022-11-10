@@ -6,57 +6,58 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary1
 {
-    public delegate void AccountHandler(string message);
-
-    public class Account
+    public class Class1
     {
-        public int sum;
-        public string fio;
-        public event AccountHandler Notify;
-        // Создаем переменную делегата
-        AccountHandler taken;
-        public Account(int sum, string fio)
-        {
-            this.sum = sum;
-            this.fio = fio;
-        }
-        // Регистрируем делегат
-        public void RegisterHandler(AccountHandler del)
-        {
-            taken += del;
-        }
-        public void UnregisterHandler(AccountHandler del)
-        {
-            taken -= del;
-        }
-        public void Add(int sum) => this.sum += sum;
+        public delegate void AccountHandler(Account sender, AccountEventArgs e);
 
-        public void Take(int sum)
+        public class Account
         {
-            if (this.sum >= sum)
+            public event AccountHandler Notify;
+            public int sum { get; private set; }
+            public string fio;
+            AccountHandler taken;
+            public Account(int sum, string fio)
             {
-                this.sum -= sum;
-                // вызываем делегат, передавая ему сообщение
-                Notify?.Invoke($"Со счета списано {sum} у.е.");
-
+                this.sum = sum;
+                this.fio = fio;
             }
-            else
+
+
+            public void RegisterHandler(AccountHandler del)
             {
-                Notify?.Invoke($"Недостаточно средств. Баланс: {this.sum} у.е.");
+                taken += del;
+            }
+
+
+
+            public void Add(int sum)
+            {
+                this.sum += sum;
+                Notify?.Invoke(this, new AccountEventArgs($"На счет зачисленно: {sum} руб.", sum));
+            }
+
+            public void Take(int sum)
+            {
+                if (this.sum >= sum)
+                {
+                    this.sum -= sum;
+                    Notify?.Invoke(this, new AccountEventArgs($"Сумма: {sum} руб. снята со счета", sum));
+                }
+                else
+                {
+                    Notify?.Invoke(this, new AccountEventArgs("Недостаточно денег на счете", sum));
+                }
             }
         }
-    }
-
-    public class AccountEventArgs
-    {
-        public string Message { get; }
-
-        public int Sum { get; }
-
-        public AccountEventArgs(string message, int sum)
+        public class AccountEventArgs
         {
-            Message = message;
-            Sum = sum;
+            public string Message { get; }
+            public int Sum { get; }
+            public AccountEventArgs(string message, int sum)
+            {
+                Message = message;
+                Sum = sum;
+            }
         }
     }
 }
