@@ -24,7 +24,19 @@ namespace Делегаты
             MessageBox.Show($"Пользователь счета: {account.fio}\nСумма транзакции: {e.Sum} руб.\n" 
                 + e.Message + $"\nТекущая сумма на счете: {sender.sum} руб.");
         }
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                account = new Account(Convert.ToInt32(textBox2.Text), textBox1.Text);
+                listBox1.Items.Clear();
+                listBox1.Items.Add($"Пользователь: {account.fio}, счет: {account.sum}");
+            }
+            catch
+            {
+                MessageBox.Show("Введите информацию пользователя");
+            }
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             int x = Convert.ToInt32(textBox3.Text);
@@ -52,42 +64,20 @@ namespace Делегаты
             listBox1.Items.Add($"Пользователь: {account.fio}, счет: {account.sum}");
             account.Notify -= DisplayMessage;
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                account = new Account(Convert.ToInt32(textBox2.Text), textBox1.Text);
-                listBox1.Items.Clear();
-                listBox1.Items.Add($"Пользователь: {account.fio}, счет: {account.sum}");
-                button2.Visible = true;
-                button3.Visible = true;
-                textBox3.Visible = true;
-            }
-            catch
-            {
-                MessageBox.Show("Введите информацию пользователя");
-            }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void textBox3_TextChanged_1(object sender, EventArgs e)
         {
 
         }
-
         private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
